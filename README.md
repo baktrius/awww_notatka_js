@@ -1,21 +1,21 @@
 # Javascript notatka
-JS powstał w latach 90 jako rozszerzenie do przeglądarki internetowej firmy Netscape umożliwiające tworzenie interaktywnych stron internetowych. Przez następne lata, aż po teraz wykorzystuję się go głównie właśnie w tym zastosowaniu.
+JS powstał w latach 90 jako rozszerzenie do przeglądarki internetowej firmy Netscape umożliwiające tworzenie interaktywnych stron internetowych. Przez następne lata, aż po teraz wykorzystuje się go głównie właśnie w tym zastosowaniu.
 
 Niemniej warto według mnie patrzeć na niego nie jako integralną część przeglądarek, a raczej zobaczyć w nim dwie rozłączne części:
 1) język ogólnego zastosowania wysokiego poziomu
 2) api przeglądarkowe umożliwiające przeglądanie i manipulację stroną internetową opisaną html'em i css'em, a także obsługiwanie akcji użytkownika
 
 ## Część I - język wysokiego poziomu
-Javascript (oficjalna nazwa kolejnych standardów to ECMAscript coś) jest pełnoprawnym językiem wysokiego poziomu ogólnego przeznaczenia. W składni jest nieco podobny do języka c, niemniej biorą go pod lupę i patrząc na szczegóły jest znacząco inny. Ciężko wymienić po kolei wszystkie różnice bo jest ich bardzo dużo (celem zgłębienia niuansów i meandrów semantyki i składni js'a  polecam przejrzenie porządnego internetowego tutorial'a np. [tego](https://javascript.info/first-steps)). W tym momencie wystarczy wiedzieć, że js jest jak c ale:
-- jest dynamicznie typowany (jak python). Zmienne nie mają z góry przypisanych typów i mogą się one zmieniać, a także są determinowane w czasie typowania.
-- istnieje namiastka klas i dziedziczenia ale zrealizowana inaczej niż w popularnych językach kompilowanych (zastosowany mechanizm to prototypowanie, ale to teraz mało ważne)
+Javascript (oficjalna nazwa kolejnych standardów to ECMAscript coś) jest pełnoprawnym językiem wysokiego poziomu ogólnego przeznaczenia. W składni jest nieco podobny do języka c, niemniej biorąc go pod lupę i patrząc na szczegóły jest znacząco inny. Ciężko wymienić po kolei wszystkie różnice, bo jest ich bardzo dużo (celem zgłębienia niuansów i meandrów semantyki i składni js'a  polecam przejrzenie porządnego internetowego tutorial'a np. [tego](https://javascript.info/first-steps)). W tym momencie wystarczy wiedzieć, że js jest jak c, ale:
+- jest dynamicznie typowany (jak python). Zmienne nie mają z góry przypisanych typów i mogą się one zmieniać, a także są determinowane w czasie typowania,
+- istnieje namiastka klas i dziedziczenia, ale zrealizowana inaczej niż w popularnych językach kompilowanych (zastosowany mechanizm to prototypowanie, ale to teraz mało ważne),
 - wykonanie js'a jest oparte o system event'ów i callback'ów w przeciwieństwie do znanej z innych języków funkcji `main`. Odpowiada to dobrze jego głównego zastosowaniu jako języka skryptowego do obsługi stron internetowych. Zrozumienie dobrze tego systemu jest kluczowe do pomyślnej pracy z tym językiem.
 
 ## Część II - api przeglądarkowe
 
-API przeglądarkowe rozszerza możliwości js'a jako ogólnego języka programowania o interakcję ze stroną internetową. Dostęp do dodatkowej funkcjonalności jest zapewniony za pomocą dostępnego wszędzie obiektu `window` (może wydawać się, że globalnych obiektów i funkcji jest więcej ale tak na prawdę następuje po prostu automatyczne 'prefiksowanie' innych zmiennych nie znalezionych w środowisku i np. `document` jest równe `window.document`).
+API przeglądarkowe rozszerza możliwości js'a jako ogólnego języka programowania o interakcję ze stroną internetową. Dostęp do dodatkowej funkcjonalności jest zapewniony za pomocą dostępnego wszędzie obiektu `window` (może wydawać się, że globalnych obiektów i funkcji jest więcej, ale tak na prawdę następuje po prostu automatyczne 'prefiksowanie' innych zmiennych nie znalezionych w środowisku i np. `document` jest równe `window.document`).
 
-Js'owe api przeglądarkowe umożliwia między innymi na:
+Js'owe api przeglądarkowe pozwala między innymi na:
 - manipulacje DOM (drzewem dokumentu - strukturą html'a)
   * adresowanie istniejących elementów
   * modyfikację własności czy wyglądu elementów
@@ -23,15 +23,15 @@ Js'owe api przeglądarkowe umożliwia między innymi na:
 - interakcję z serwerem przez AJAX'sy
 
 ### Dołączanie js'a do strony
-Jako, że to js jest dodatkiem do strony html'owe a nie na odwrót to na samym początku należy jakoś przeglądarce podpowiedzieć aby do strony konkretny skrypt.
+Jako że to js jest dodatkiem do strony html'owej, a nie na odwrót, to na samym początku należy jakoś przeglądarce podpowiedzieć aby dodała do strony konkretny skrypt.
 
-Robi się to za pomocą tagu tagu `<script>`. Skrypt js'owy można napisać w środku tagu, ale lepiej dołączyć zewnętrzny plik (przez specyfikację relatywnej ścieżki na serwerze w atrybucie `src`). W ten sposób zyskujemy nie tylko lepszą separację kodu ale często również lepsze wskazówki od naszego środowiska programistycznego.
+Robi się to za pomocą tagu `<script>`. Skrypt js'owy można napisać w środku tagu, ale lepiej dołączyć zewnętrzny plik (przez specyfikację relatywnej ścieżki na serwerze w atrybucie `src`). W ten sposób zyskujemy nie tylko lepszą separację kodu, ale często również lepsze wskazówki od naszego środowiska programistycznego.
 
-Uwaga na boku jest taka, że miejsce dołączenia skryptu w kodzie html ma znaczenia i na tym etapie najbezpieczniej, jest to zrobić na końcu html (tuż przed końcem taga `<body>`).
+Uwaga na boku jest taka, że miejsce dołączenia skryptu w kodzie html ma znaczenia i na tym etapie najbezpieczniej jest to zrobić na końcu html (tuż przed końcem taga `<body>`).
 
 ### Uzyskiwanie dostępu do elementów DOM
 Aby wykonać jakiekolwiek operacje na elementach html'owy należy najpierw uzyskać "odnośniki" do nich po stronie js'a. Możemy tego dokonać posługując się metodami obiektu `window.document` (wystarczy samo `document`, bo `window` nie trzeba pisać). Najpopularniejsze z nich to chyba metody:
-- [getElementById](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById) - zwraca odnośnik do elementu za pomocą jego html'owego atrybutu `id`. Przydatne zazwyczaj wtedy kiedy, chcemy uzyskać dostęp do jednego konkretnego obiektu.
+- [getElementById](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById) - zwraca odnośnik do elementu za pomocą jego html'owego atrybutu `id`. Przydatne zazwyczaj wtedy kiedy chcemy uzyskać dostęp do jednego konkretnego obiektu.
 - [querySelectorAll](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll) - Pozwala uzyskać odnośniki do całej listy obiektów html'owych za jednym zamachem, na podstawie selector'a css
 
 
