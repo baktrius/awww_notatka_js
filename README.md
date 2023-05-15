@@ -27,7 +27,7 @@ Jako że to js jest dodatkiem do strony html'owej, a nie na odwrót, to na samym
 
 Robi się to za pomocą tagu `<script>`. Skrypt js'owy można napisać w środku tagu, ale lepiej dołączyć zewnętrzny plik (przez specyfikację relatywnej ścieżki na serwerze w atrybucie `src`). W ten sposób zyskujemy nie tylko lepszą separację kodu, ale często również lepsze wskazówki od naszego środowiska programistycznego.
 
-Uwaga na boku jest taka, że miejsce dołączenia skryptu w kodzie html ma znaczenia i na tym etapie najbezpieczniej jest to zrobić na końcu html (tuż przed końcem taga `<body>`).
+Uwaga na boku jest taka, że miejsce dołączenia skryptu w kodzie html ma znaczenia i na tym etapie najbezpieczniej jest to zrobić na końcu html'a - tuż przed końcem taga `<body>` (inną metodę zaproponuję później przy okazji poznawania eventów).
 
 ### Uzyskiwanie dostępu do elementów DOM
 Aby wykonać jakiekolwiek operacje na elementach html'owy należy najpierw uzyskać "odnośniki" do nich po stronie js'a. Możemy tego dokonać posługując się metodami obiektu `window.document` (wystarczy samo `document`, bo `window` nie trzeba pisać). Najpopularniejsze z nich to chyba metody:
@@ -100,15 +100,15 @@ function myEventHandler(event) {
     // jest to obiekt zawierający informacje takie jak czas zdarzenia, czy docelowy element html itp.
     console.log(event)
     // wyświetlenie alertu
-    alert('coś rzesz zrobił?')
+    alert('cóż żeś zrobił?')
 }
 
 // zarejestrowanie funkcji myEventHandler do obsługi zdarzenia kliknięcia elementu
 // html odpowiadającego odnośnikowi el
 // teraz będzie się działo ...
-el.addEventListener('click', myEventListener)
+el.addEventListener('click', myEventHandler)
 ```
-Znowu przykład jest prosty, zdarzeń do obsługi jest wiele, ciężko wymienić je wszystkie. Jakąś pomocą może być wzięcie dowolnego elementu html wypisanie go na konsoli i przejrzenie atrybutów zaczynających się od `on` np. `onclick`. Odpowiadają one obsługiwanym zdarzeniom (bez prefiksu `on`), a nazwa może zasugerować co robią. Dalej oczywiście niezastąpioną pomocą zostaje internet.
+Znowu przykład jest prosty, zdarzeń do obsługi jest wiele, ciężko wymienić je wszystkie. Jakąś pomocą może być wzięcie dowolnego elementu html wypisanie go na konsoli i przejrzenie atrybutów zaczynających się od `on` np. `onclick`. Odpowiadają one obsługiwanym zdarzeniom (bez prefiksu `on`), a nazwa może zasugerować co robią. Dalej niezastąpioną pomocą oczywiście pozostaje internet.
 
 Dużo więcej szczegółów można znaleźć [tutaj](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events). Link przedstawia między innymi:
 - szczegóły działania `addEventListener`
@@ -117,6 +117,21 @@ Dużo więcej szczegółów można znaleźć [tutaj](https://developer.mozilla.o
 - zapobieganie domyślnej obsłudze różnych zdarzeń (np. żeby klawisz `F11` nie włączał fullscreen'a)
 - zasady propagacji eventów - czyli w szczegółach to jak zdarzenie z elementu dziecka (np. jego kliknięcie) jest przekazywane później do rodzica (w strukturze DOM) i z powrotem (ważne!).
 - przykłady! (więcej i fajne)
+
+Na koniec tego akapitu jako wzór dobrego stylu chciałem podać jeszcze jeden przykład zastosowania eventów. Wspomniałem wcześniej, że skrypty najłatwiej dołączać na końcu html'a, żeby uciec od problemu kolejności ładowania strony. Jednak dawanie nieformalnego wymagania w pakiecie ze skryptem, aby był on dołączony na końcu strony, nie jest powszechnie uważane w środowisku za dobrą praktykę programistyczną i może narazić nas na krzywe spojrzenie współziomków. Na ratunek przed tą niekomfortową sytuacją przychodzą nam eventy.
+```javascript
+addEventListener("DOMContentLoaded", (event) => {
+    // anonimowa funkcja obsługi zdarzenia pełnego załadowania DOM'a (mniej więcej html'a)
+
+    // w tym miejscu możemy bezpiecznie odwoływać się już do wszystkich elementów html
+    // będących na stronie - z pewnością już zdążyły się załadować
+
+    // często w takiej klamrze bezpieczeństwa umieszcza się po prostu wszystko
+
+    const el = document.getElementById("coDuszaZapragnie"); // bezpieczne
+    el.innerText = "strona załadowana!";
+});
+```
 
 ### Interakcja z serwerem przez AJAX'sy
 Dotychczas wywoływanie funkcjonalności na serwerze następowało niejako przez "przeładowanie całej strony" (wywołane czy to kliknięciem odpowiedniego linku, czy wysłanie formularza). Powyższa praktyka zaczyna być uciążliwa w miarę jak nasza strona "rośnie" a wykonywane akcje dotyczą tylko jej fragmentu (każdorazowo trzeba przeładować dużą stronę i choć cache pewnie troche pomaga to można lepiej).
